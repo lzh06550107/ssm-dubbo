@@ -1,0 +1,113 @@
+version: '3.1'
+services:
+  zoo:
+    image: zookeeper:3.5
+    restart: always
+    container_name: zoo
+
+  dubbo_admin:
+    image: hansonyao/dubbo_admin
+    container_name: dubbo_admin
+    links:
+      - zoo:zoo
+    depends_on:
+      - zoo
+    ports:
+      - 8082:8080
+    restart: always
+    environment:
+      dubbo.registry.address: zookeeper://zoo:2181
+      dubbo.admin.root.password: root
+
+
+  ssm_service_user:
+    build:
+      context: ./ssm_service_user/
+      args:
+        JAR_FILE: ssm_service_user.jar
+    image: ssm_service_user:0.1
+    container_name: ssm_service_user
+    links:
+      - zoo:zoo
+      - db:db
+    depends_on:
+      - zoo
+      - db
+    restart: always
+    environment:
+      dubbo.registry.address: zookeeper://zoo:2181
+      dubbo.provider.user.protocol.port: 20882
+
+  ssm_service_article:
+    build:
+      context: ./ssm_service_article/
+      args:
+        JAR_FILE: ssm_service_article.jar
+    image: ssm_service_article:0.1
+    container_name: ssm_service_article
+    links:
+      - zoo:zoo
+      - db:db
+    depends_on:
+      - zoo
+      - db
+    restart: always
+    environment:
+      dubbo.registry.address: zookeeper://zoo:2181
+      dubbo.provider.article.protocol.port: 20882
+
+  ssm_service_picture:
+    build:
+      context: ./ssm_service_picture/
+      args:
+        JAR_FILE: ssm_service_picture.jar
+    image: ssm_service_picture:0.1
+    container_name: ssm_service_picture
+    links:
+      - zoo:zoo
+      - db:db
+    depends_on:
+      - zoo
+      - db
+    restart: always
+    environment:
+      dubbo.registry.address: zookeeper://zoo:2181
+      dubbo.provider.picture.protocol.port: 20882
+
+  ssm_dubbo_web:
+    build:
+      context: ./ssm_dubbo_web/
+      args:
+        JAR_FILE: ssm_dubbo_web.war
+    image: ssm_dubbo_web:0.1
+    container_name: ssm_dubbo_web
+    links:
+      - zoo:zoo
+    depends_on:
+      - zoo
+    ports:
+      - 8080:8080
+    restart: always
+    environment:
+      dubbo.registry.address: zookeeper://zoo:2181
+
+  db:
+    build: ./mysql/
+    image: db:0.1
+    container_name: db
+    ports:
+      - "3306:3306"
+    volumes:
+      - ./mysql/data:/var/lib/mysql:rw
+      - ./mysql/logs:/var/lib/mysql-logs:rw
+      - ./mysql/conf.d:/etc/mysql/conf.d:ro
+      - ./mysql/sql:/docker-entrypoint-initdb.d:ro
+    environment:
+      MYSQL_ROOT_PASSWORD: root
+      MYSQL_DATABASE: ssm_dubbo_db
+      MYSQL_USER: ssm_dubbo_db
+      MYSQL_PASSWORD: 123456
+    restart: always
+    command: "--character-set-server=utf8"
+
+
