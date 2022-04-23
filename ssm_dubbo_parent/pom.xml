@@ -22,7 +22,7 @@
 		<ssm_service_article.version>1.0.0</ssm_service_article.version>
 		<ssm_service_picture.version>1.0.0</ssm_service_picture.version>
 
-        <spring.version>4.3.20.RELEASE</spring.version>
+        <spring.version>5.3.19</spring.version>
 		<mybatis.version>3.2.5</mybatis.version>
 		<mybatis-spring.version>1.2.2</mybatis-spring.version>
 		<jdbc.driver.version>5.1.38</jdbc.driver.version>
