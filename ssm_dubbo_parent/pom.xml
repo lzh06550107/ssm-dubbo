@@ -29,7 +29,7 @@
 		<druid.version>1.0.24</druid.version>
 		<xbean.version>4.2</xbean.version>
 
-		<dubbo.version>2.6.5</dubbo.version>
+		<dubbo.version>2.6.12</dubbo.version>
         <zookeeper.version>3.4.9</zookeeper.version>
         <zkclient.version>0.10</zkclient.version>
         <javassist.version>3.22.0-GA</javassist.version>
