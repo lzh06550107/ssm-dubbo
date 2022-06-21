@@ -25,7 +25,7 @@
         <spring.version>4.3.20.RELEASE</spring.version>
 		<mybatis.version>3.2.5</mybatis.version>
 		<mybatis-spring.version>1.2.2</mybatis-spring.version>
-		<jdbc.driver.version>5.1.38</jdbc.driver.version>
+		<jdbc.driver.version>8.0.28</jdbc.driver.version>
 		<druid.version>1.0.24</druid.version>
 		<xbean.version>4.2</xbean.version>
 
